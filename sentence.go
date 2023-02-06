@@ -277,6 +277,10 @@ func (p *SentenceParser) Parse(raw string) (Sentence, error) {
 	// Custom parser allow overriding of existing parsers
 	if parser, ok := p.CustomParsers[s.Type]; ok {
 		return parser(s)
+	} else if parser, ok := customParsers[s.Talker+s.Type]; ok {
+		s.Type = s.Talker + s.Type
+		s.Talker = ""
+		return parser(s)
 	}
 
 	if s.Raw[0] == SentenceStart[0] {
